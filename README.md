@@ -4,4 +4,4 @@
 
 ### Dia 01
 
-### Dia 02
+### Dia 02 - Cenários de Testes
