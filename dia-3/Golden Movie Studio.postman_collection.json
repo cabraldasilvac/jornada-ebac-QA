@@ -1,0 +1,482 @@
+{
+	"info": {
+		"_postman_id": "9fcd6798-6410-479e-a56b-775bd030c54b",
+		"name": "Golden Movie Studio",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20301234"
+	},
+	"item": [
+		{
+			"name": "POST",
+			"item": [
+				{
+					"name": "Cadastro com sucesso",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code deve ser 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Deve validar as propriedade message\", function () {",
+									"    pm.expect(pm.response.json()).to.haveOwnProperty(\"message\");",
+									"  ",
+									"});",
+									"",
+									"pm.test(\"Deve validar mensagem de retorno\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Cadastro realizado com sucesso!\");",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"{{$randomFirstName}}\",\n  \"sobrenome\": \"Johnson\",\n  \"email\": \"{{$randomEmail}}\",\n  \"telefone\": \"1122334455\",\n  \"senha\": \"Password@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/cadastro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cadastro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastro com falha - sobrenome vazio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Sobrenome não pode estar vazio\", function () {",
+									"    pm.response.to.have.status(400);",
+									"    pm.expect(pm.response.json().message).to.eql(\"Sobrenome não pode estar vazio\");",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomFirstName}}\",\n    \"sobrenome\": \"\",\n    \"email\": \"{{$randomEmail}}\",\n    \"telefone\": \"1122334455\",\n    \"senha\": \"Password@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/cadastro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cadastro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastro com validação de senha inválida",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Senha deve ter pelo menos 8 caracteres, incluir uma letra maiúscula, um número e um caractere especial (!@#$&*)\", function () {",
+									"    pm.expect(pm.response.text()).to.include('Senha deve ter pelo menos 8 caracteres');",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomFirstName}}\",\n    \"sobrenome\": \"Campos\",\n    \"email\": \"{{$randomEmail}}\",\n    \"telefone\": \"1122334455\",\n    \"senha\": \"@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/cadastro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cadastro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastro com validação de email duplicado",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Este email já está cadastrado.\", function () {",
+									"    pm.response.to.have.status(400);",
+									"    pm.expect(pm.response.json().message).to.eql(\"Este email já está cadastrado.\");",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomFirstName}}\",\n    \"sobrenome\": \"Cabral\",\n    \"email\": \"wanderley@teste.com\",\n    \"telefone\": \"1122334455\",\n    \"senha\": \"Password@123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/cadastro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cadastro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastro com validação de senha vazio",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Senha não pode estar vazio\", function () {",
+									"    pm.expect(pm.response.json().message).to.include(\"\\\"senha\\\" is not allowed to be empty\");",
+									"});",
+									"",
+									"pm.test(\"Response time is less than 200ms\", function () {",
+									"    pm.expect(pm.response.responseTime).to.be.below(200);",
+									"});",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomFirstName}}\",\n    \"sobrenome\": \"Cabral\",\n    \"email\": \"wanderley@teste.com\",\n    \"telefone\": \"1122334455\",\n    \"senha\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/cadastro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"cadastro"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GET",
+			"item": [
+				{
+					"name": "Buscar usuario por ID válido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code deve ser 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Deve validar as propriedade id, nome, email\", function () {",
+									"    pm.expect(pm.response.json()).to.haveOwnProperty(\"id\");",
+									"     pm.expect(pm.response.json()).to.haveOwnProperty(\"nome\");",
+									"      pm.expect(pm.response.json()).to.haveOwnProperty(\"email\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/usuario/id/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuario",
+								"id",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar usuario por ID inexistente",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code deve ser 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Deve validar as propriedade message\", function () {",
+									"    pm.expect(pm.response.json()).to.haveOwnProperty(\"message\");",
+									"  ",
+									"});",
+									"",
+									"pm.test(\"Deve validar mensagem de retorno\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Usuário não encontrado.\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/usuario/id/200",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuario",
+								"id",
+								"200"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar usuario por EMAIL válido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code deve ser 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Deve validar as propriedade email\", function () {",
+									"    pm.expect(pm.response.json()).to.haveOwnProperty(\"email\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/usuario/email/wanderley@teste.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuario",
+								"email",
+								"wanderley@teste.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar usuario por EMAIL inválido",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code deve ser 404\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});",
+									"",
+									"pm.test(\"Deve validar mensagem de retorno\", function () {",
+									"    pm.expect(pm.response.text()).to.include(\"Usuário não encontrado.\");",
+									"});",
+									"",
+									"pm.test(\"Deve validar as propriedade message\", function () {",
+									"    pm.expect(pm.response.json()).to.haveOwnProperty(\"message\");",
+									"  ",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/usuario/email/wanderley1@teste.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"usuario",
+								"email",
+								"wanderley1@teste.com"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
