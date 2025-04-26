@@ -2,6 +2,8 @@
 
 Nome: **_Wanderley Cabral_**
 
+![Jornada-QA](../imagens/jornada-QA.png)
+
 ## 🗓️ 1. Reunião de Planning
 
 A **Reunião de Planning** é o pontapé inicial de cada Sprint no Scrum. Nela, toda a equipe se alinha sobre:
