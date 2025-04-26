@@ -1,6 +1,6 @@
 # Documentação de API e Testes
 
-![Texto Alternativo](./imagem/img001.png)
+![Jornada-QA](../imagens/jornada-QA.png)
 
 ## Overview: Testes de contrato e testes de API, Swagger e Postman
 
