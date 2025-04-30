@@ -1,6 +1,6 @@
 # 🚀 DIA 1 - Planning, Definições e Critérios de Aceite
 
-Nome: **_Wanderley Cabral_**
+## Aluno: **_Wanderley Cabral_**
 
 ![Jornada-QA](../imagens/jornada-QA.png)
 
